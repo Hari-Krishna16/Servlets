@@ -19,20 +19,24 @@ public class DeleteServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String userId = request.getParameter("userId");
-		int id = Integer.parseInt(userId);
 		PrintWriter writer = response.getWriter();
-		Contacts values = new Contacts();
-		values.setId(id);
-		Map<String, Object> tableData = DbUtility.get(DbUtility.getConnection(DATABASE_URL, USER, USER_PASSWORD), "apm", "contacts_table", Arrays.asList("pk_id"),
-				"pk_id", Arrays.asList(values.getId()));
-		DbUtility.closeConnection(DbUtility.getConnection(DATABASE_URL, USER, USER_PASSWORD));
-		if ((!Utility.isBlank(tableData))) {
-			DbOperations.delete(values);
-			writer.print("deleted sucessfully");
-		} else {
-			writer.print("Enter Valid User Id");
+		if(!Utility.isBlank(userId)) {
+			int id = Integer.parseInt(userId);
+			Contacts values = new Contacts();
+			values.setId(id);
+			Map<String, Object> tableData = DbUtility.get(DbUtility.getConnection(DATABASE_URL, USER, USER_PASSWORD), "apm", "contacts_table", Arrays.asList("pk_id"),
+					"pk_id", Arrays.asList(values.getId()));
+			DbUtility.closeConnection(DbUtility.getConnection(DATABASE_URL, USER, USER_PASSWORD));
+			if ((!Utility.isBlank(tableData))) {
+				DbOperations.delete(values);
+				writer.print("deleted sucessfully");
+			} else {
+				writer.print("Enter Valid User Id");
+			}
+		}else {
+			writer.print("enter Value ");
 		}
-
+		
 	}
 
 }

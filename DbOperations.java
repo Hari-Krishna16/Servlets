@@ -21,7 +21,7 @@ public class DbOperations {
 		DbUtility.closeConnection(connection);
 		return id;
 	}
-
+	
 	public static Object delete(Contacts values) {
 		Connection connection = DbUtility.getConnection(DATABASE_URL, USER, USER_PASSWORD);
 		DbUtility.delete(connection, "apm", "contacts_table", "pk_id", values.getId());
@@ -30,6 +30,7 @@ public class DbOperations {
 	}
 
 	public static String update(List<String> columns, List<String> values) {
+		if((Utility.isBlank(columns)) || Utility.isBlank(values)) return null;
 		Connection connection = DbUtility.getConnection(DATABASE_URL, USER, USER_PASSWORD);
 		Map<String, Object> tableData = DbUtility.get(connection, "apm", "contacts_table", Arrays.asList(),
 				columns.get(0), Arrays.asList(values.get(0)));
